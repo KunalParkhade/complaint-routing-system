@@ -5,45 +5,4 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 
-export default function RegisterPage() {
-  const router = useRouter()
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
-
-  async function submit(event: FormEvent) {
-    event.preventDefault()
-    setError(''); setMessage(''); setLoading(true)
-    const { data, error } = await supabase.auth.signUp({
-      email, password,
-      options: { data: { full_name: name } },
-    })
-    setLoading(false)
-    if (error) return setError(error.message)
-    if (data.session) router.push('/dashboard')
-    else setMessage('Account created. Check your email to confirm your account, then sign in.')
-  }
-
-  return (
-    <main className="auth-shell">
-      <section className="auth-card">
-        <div className="brand-mark">CRS</div>
-        <p className="eyebrow">Complaint Routing System 2.0</p>
-        <h1>Create your account</h1>
-        <p className="muted">One place to raise, route, and track complaints.</p>
-        <form onSubmit={submit} className="stack">
-          <label>Full name<input value={name} onChange={e => setName(e.target.value)} required /></label>
-          <label>Email<input type="email" value={email} onChange={e => setEmail(e.target.value)} required /></label>
-          <label>Password<input type="password" minLength={6} value={password} onChange={e => setPassword(e.target.value)} required /></label>
-          {error && <div className="error-box">{error}</div>}
-          {message && <div className="success-box">{message}</div>}
-          <button className="primary-button" disabled={loading}>{loading ? 'Creating account…' : 'Create account'}</button>
-        </form>
-        <p className="auth-footer">Already have an account? <Link href="/login">Sign in</Link></p>
-      </section>
-    </main>
-  )
-}
+export default function RegisterPage(){const router=useRouter();const[name,setName]=useState('');const[email,setEmail]=useState('');const[password,setPassword]=useState('');const[error,setError]=useState('');const[message,setMessage]=useState('');const[loading,setLoading]=useState(false);async function submit(event:FormEvent){event.preventDefault();setError('');setMessage('');setLoading(true);const{data,error}=await supabase.auth.signUp({email,password,options:{data:{full_name:name}}});setLoading(false);if(error)return setError(error.message);if(data.session)router.push('/dashboard');else setMessage('Account created. Check your email to confirm your account, then sign in.')}return <main className="auth-shell"><section className="auth-card"><a href="/" className="back-link">← CRS 2.0</a><div className="brand-mark">CRS</div><p className="eyebrow">JOIN THE SYSTEM</p><h1>Make your voice count.</h1><p className="muted">Ek account se complaint raise karein, routing dekhein aur resolution track karein.</p><form onSubmit={submit} className="stack"><label>Full name<input value={name} onChange={e=>setName(e.target.value)} placeholder="Your name" required /></label><label>Email<input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="you@example.com" required /></label><label>Password<input type="password" minLength={6} value={password} onChange={e=>setPassword(e.target.value)} placeholder="At least 6 characters" required /></label>{error&&<div className="error-box">{error}</div>}{message&&<div className="success-box">{message}</div>}<button className="primary-button" disabled={loading}>{loading?'Creating account…':'Create account →'}</button></form><p className="auth-footer">Already have an account? <Link href="/login">Sign in</Link></p></section></main>}
